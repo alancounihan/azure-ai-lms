@@ -345,8 +345,13 @@ function LoginView({ onLogin }) {
         const result = await window._fbAuth.signInWithPopup(window._gProvider);
         onLogin(toUser(result.user));
       } else {
-        // Demo mode — simulate Google with a fake profile
-        const demoUser = { uid: 'google_demo_' + Date.now(), name: "Google User", email: "googleuser@gmail.com", photoURL: "https://lh3.googleusercontent.com/a/default-user" };
+        // Demo mode — ask for real name
+        setGoogleLoading(false);
+        const enteredName = window.prompt("What's your name?","");
+        if(!enteredName||!enteredName.trim())return;
+        setGoogleLoading(true);
+        const cleanName=enteredName.trim();
+        const demoUser={uid:'google_demo_'+Date.now(),name:cleanName,email:cleanName.toLowerCase().replace(/\s+/g,'.')+"@demo.com",photoURL:null};
         saveDemoSession(demoUser);
         onLogin(demoUser);
       }
