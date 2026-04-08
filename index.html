@@ -972,7 +972,7 @@ function App() {
       return unsub;
     } else {
       const session = getDemoSession();
-      setAuthUser(session);
+      if(session && session.name==='Google User'){saveDemoSession(null);setAuthUser(null);}else{setAuthUser(session);}
       setAuthLoading(false);
     }
   }, []);
